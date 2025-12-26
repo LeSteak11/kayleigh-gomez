@@ -12,22 +12,52 @@ export default {
   
   // ===== Modal-Level Summary Fields =====
   metadata: {
-    durationWeeks: 16, // Standard programming cycle
-    systemFocus: "strength", // Glute refinement + compound movements
-    ageRange: "20-24"
+    durationWeeks: 16,
+    systemFocus: "strength",
+    ageRange: "20-24",
+    trainingFrequency: "5x/week",
+    programPhase: "maintenance"
   },
   
-  constraints: [
-    "High posterior chain volume requiring fatigue management",
-    "Maintenance phase requiring metabolic monitoring",
-    "Advanced training age requiring progressive overload precision"
-  ],
+  // Context & Constraints (analytical format)
+  contextConstraints: {
+    trainingAvailability: "consistent 5-day schedule",
+    equipmentAccess: "full gym",
+    recoveryCapacity: "high posterior-chain volume",
+    phaseConsiderations: "maintenance without metabolic adaptation"
+  },
   
-  observedChanges: [
-    "Maintained sub-16% body fat without metabolic adaptation",
-    "Glute refinement with preserved rear-delt development",
-    "Progressive overload achieved across compound movements",
-    "Optimal adherence to nutritional protocols throughout program"
+  // Key Outcomes (structured, measurable)
+  outcomes: {
+    bodyComposition: "maintained <16% body fat",
+    strength: "progressive overload sustained across compounds",
+    hypertrophy: "glute-focused refinement, rear-delts preserved",
+    adherence: "consistent nutritional compliance"
+  },
+  
+  // Performance & Adaptation (optional, data-driven)
+  performance: {
+    strengthTrend: "↑",
+    volumeTolerance: "increased",
+    recoveryMarkers: "stable RHR (58→57 bpm)",
+    fatigueManagement: "monitored effectively"
+  },
+  
+  // Program Notes (optional, single line)
+  programNotes: "Overload progression required tighter fatigue management in final 4 weeks.",
+  
+  // Background & Summary (optional, appears bottom-right below photos in modal)
+  background: "Cassidy is a long-term strength trainee with several years of consistent lifting experience. She trains primarily in a full gym environment and gravitates toward structured programming, compound movements, and clearly defined progression blocks.\n\nOutside the gym, she maintains a generally active lifestyle and values routine. She prefers early training sessions, tracks her workouts closely, and responds well to predictable weekly structure. Nutrition is approached pragmatically rather than aggressively, with an emphasis on consistency over restriction.\n\nDuring this phase, her primary goal was maintenance — preserving strength, physique, and performance without pushing into unnecessary metabolic stress. She was not seeking visible transformation, but rather stability, refinement, and continued progression within established training capacity.\n\nShe reports high adherence when training parameters are clearly defined and fatigue is actively managed, and tends to respond best to programs that prioritize recovery alongside volume exposure.",
+  
+  // Tags (for filtering and search)
+  tags: [
+    "Advanced",
+    "Hypertrophy",
+    "Glute-Bias",
+    "Lean Composition",
+    "Maintenance Phase",
+    "X-Frame",
+    "Athletic Build"
   ],
   
   images: {

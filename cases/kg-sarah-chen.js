@@ -13,20 +13,45 @@ export default {
   metadata: {
     durationWeeks: 16,
     systemFocus: "consistency",
-    ageRange: "30-34"
+    ageRange: "30-34",
+    trainingFrequency: "4x/week",
+    programPhase: "build"
   },
   
-  constraints: [
-    "High-stress corporate environment",
-    "Frequent travel schedule",
-    "Previous history of program-hopping"
-  ],
+  // Context & Constraints (analytical format)
+  contextConstraints: {
+    trainingAvailability: "inconsistent (frequent travel)",
+    equipmentAccess: "variable (hotel + gym)",
+    recoveryCapacity: "high-stress corporate environment",
+    phaseConsiderations: "previous program-hopping history"
+  },
   
-  observedChanges: [
-    "Maintained consistent training for 16 consecutive weeks",
-    "Built habit infrastructure independent of motivation",
-    "Observable strength progression via tracked metrics",
-    "Improved stress management through structured routine"
+  // Key Outcomes (structured, measurable)
+  outcomes: {
+    adherence: "maintained 16 consecutive weeks",
+    behavioral: "built habit infrastructure independent of motivation",
+    strength: "progressive overload via tracked metrics",
+    stress: "improved stress management through routine"
+  },
+  
+  // Performance & Adaptation (optional)
+  performance: {
+    strengthTrend: "↑",
+    volumeTolerance: "stable",
+    recoveryMarkers: "maintained lean mass during high-stress period",
+    fatigueManagement: "effective"
+  },
+  
+  // Program Notes
+  programNotes: "Travel adaptations required flexible equipment solutions. Consistency remained primary metric.",
+  
+  // Tags (for filtering and search)
+  tags: [
+    "Intermediate",
+    "Consistency",
+    "Travel Adaptations",
+    "High Stress",
+    "Habit Building"
   ],
   
   images: {

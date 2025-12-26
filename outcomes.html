@@ -70,6 +70,12 @@ Each entry reflects an individual training context and highlights broader patter
             <button class="filter-btn" data-filter-duration="16+">16+ weeks</button>
           </div>
         </div>
+        <div class="filter-group filter-group--tags">
+          <label class="filter-label">Filter by Tags</label>
+          <div class="active-tags-container" id="activeTagsContainer">
+            <span class="no-tags-message">Click tags in case modals to filter</span>
+          </div>
+        </div>
       </div>
 
       <!-- Case Grid -->
@@ -111,24 +117,35 @@ Each entry reflects an individual training context and highlights broader patter
     
     // Get all consented cases and transform to display format
     const allCasesData = getAllCases();
-    console.log('Loaded cases:', allCasesData);
     const cases = allCasesData.map(c => ({
       id: c.id,
       slug: c.slug,
       focus: c.metadata.systemFocus,
       duration: c.metadata.durationWeeks,
       ageRange: c.metadata.ageRange,
+      trainingFrequency: c.metadata.trainingFrequency,
+      programPhase: c.metadata.programPhase,
+      // Support both old and new data formats
       constraints: c.constraints,
       changes: c.observedChanges,
+      contextConstraints: c.contextConstraints,
+      outcomes: c.outcomes,
+      performance: c.performance,
+      programNotes: c.programNotes,
+      background: c.background,
+      tags: c.tags || [],
       beforeImage: c.images.before,
       afterImage: c.images.after
     }));
-    console.log('Transformed cases:', cases);
+
+    // Extract all unique tags for filtering
+    const allTags = [...new Set(cases.flatMap(c => c.tags))].sort();
 
     // Filter state
     let activeFilters = {
       focus: 'all',
-      duration: 'all'
+      duration: 'all',
+      searchTags: []
     };
 
     // Render cases
@@ -140,7 +157,9 @@ Each entry reflects an individual training context and highlights broader patter
           (activeFilters.duration === '8-12' && c.duration >= 8 && c.duration <= 12) ||
           (activeFilters.duration === '12-16' && c.duration > 12 && c.duration <= 16) ||
           (activeFilters.duration === '16+' && c.duration > 16);
-        return focusMatch && durationMatch;
+        const tagMatch = activeFilters.searchTags.length === 0 || 
+          activeFilters.searchTags.every(tag => c.tags.includes(tag));
+        return focusMatch && durationMatch && tagMatch;
       });
 
       grid.innerHTML = filtered.map(c => `
@@ -175,6 +194,190 @@ Each entry reflects an individual training context and highlights broader patter
       const modal = document.getElementById('caseModal');
       const body = document.getElementById('modalBody');
 
+      // Build metadata section with optional fields
+      let metadataHTML = `
+        <div class="metadata-item">
+          <span class="metadata-label">Duration</span>
+          <span class="metadata-value">${caseData.duration} weeks</span>
+        </div>
+        <div class="metadata-item">
+          <span class="metadata-label">System Focus</span>
+          <span class="metadata-value">${caseData.focus.replace('-', ' ')}</span>
+        </div>
+        <div class="metadata-item">
+          <span class="metadata-label">Age Range</span>
+          <span class="metadata-value">${caseData.ageRange}</span>
+        </div>
+      `;
+      
+      if (caseData.trainingFrequency) {
+        metadataHTML += `
+          <div class="metadata-item">
+            <span class="metadata-label">Frequency</span>
+            <span class="metadata-value">${caseData.trainingFrequency}</span>
+          </div>
+        `;
+      }
+      
+      if (caseData.programPhase) {
+        metadataHTML += `
+          <div class="metadata-item">
+            <span class="metadata-label">Phase</span>
+            <span class="metadata-value">${caseData.programPhase}</span>
+          </div>
+        `;
+      }
+
+      // Context & Constraints section (new format or fallback to old)
+      let contextHTML = '';
+      if (caseData.contextConstraints) {
+        contextHTML = `
+          <div class="case-detail__section">
+            <h3>Context & Constraints</h3>
+            <div class="case-data-grid">
+              ${caseData.contextConstraints.trainingAvailability ? `
+                <div class="data-row">
+                  <span class="data-label">Training availability:</span>
+                  <span class="data-value">${caseData.contextConstraints.trainingAvailability}</span>
+                </div>
+              ` : ''}
+              ${caseData.contextConstraints.equipmentAccess ? `
+                <div class="data-row">
+                  <span class="data-label">Equipment:</span>
+                  <span class="data-value">${caseData.contextConstraints.equipmentAccess}</span>
+                </div>
+              ` : ''}
+              ${caseData.contextConstraints.recoveryCapacity ? `
+                <div class="data-row">
+                  <span class="data-label">Recovery:</span>
+                  <span class="data-value">${caseData.contextConstraints.recoveryCapacity}</span>
+                </div>
+              ` : ''}
+              ${caseData.contextConstraints.phaseConsiderations ? `
+                <div class="data-row">
+                  <span class="data-label">Phase:</span>
+                  <span class="data-value">${caseData.contextConstraints.phaseConsiderations}</span>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      } else if (caseData.constraints) {
+        // Fallback to old format
+        contextHTML = `
+          <div class="case-detail__section">
+            <h3>Constraints</h3>
+            <ul>
+              ${caseData.constraints.map(c => `<li>${c}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      // Key Outcomes section (new format or fallback to old)
+      let outcomesHTML = '';
+      if (caseData.outcomes) {
+        outcomesHTML = `
+          <div class="case-detail__section">
+            <h3>Key Outcomes</h3>
+            <div class="case-data-grid">
+              ${caseData.outcomes.bodyComposition ? `
+                <div class="data-row">
+                  <span class="data-label">Body composition:</span>
+                  <span class="data-value">${caseData.outcomes.bodyComposition}</span>
+                </div>
+              ` : ''}
+              ${caseData.outcomes.strength ? `
+                <div class="data-row">
+                  <span class="data-label">Strength:</span>
+                  <span class="data-value">${caseData.outcomes.strength}</span>
+                </div>
+              ` : ''}
+              ${caseData.outcomes.hypertrophy ? `
+                <div class="data-row">
+                  <span class="data-label">Hypertrophy:</span>
+                  <span class="data-value">${caseData.outcomes.hypertrophy}</span>
+                </div>
+              ` : ''}
+              ${caseData.outcomes.adherence ? `
+                <div class="data-row">
+                  <span class="data-label">Adherence:</span>
+                  <span class="data-value">${caseData.outcomes.adherence}</span>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      } else if (caseData.changes) {
+        // Fallback to old format
+        outcomesHTML = `
+          <div class="case-detail__section">
+            <h3>Observed Changes</h3>
+            <ul>
+              ${caseData.changes.map(c => `<li>${c}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      // Performance & Adaptation section (new format only)
+      let performanceHTML = '';
+      if (caseData.performance) {
+        performanceHTML = `
+          <div class="case-detail__section">
+            <h3>Performance & Adaptation</h3>
+            <div class="case-data-grid">
+              ${caseData.performance.strengthTrend ? `
+                <div class="data-row">
+                  <span class="data-label">Strength trend:</span>
+                  <span class="data-value">${caseData.performance.strengthTrend}</span>
+                </div>
+              ` : ''}
+              ${caseData.performance.volumeTolerance ? `
+                <div class="data-row">
+                  <span class="data-label">Volume tolerance:</span>
+                  <span class="data-value">${caseData.performance.volumeTolerance}</span>
+                </div>
+              ` : ''}
+              ${caseData.performance.recoveryMarkers ? `
+                <div class="data-row">
+                  <span class="data-label">Recovery markers:</span>
+                  <span class="data-value">${caseData.performance.recoveryMarkers}</span>
+                </div>
+              ` : ''}
+              ${caseData.performance.fatigueManagement ? `
+                <div class="data-row">
+                  <span class="data-label">Fatigue management:</span>
+                  <span class="data-value">${caseData.performance.fatigueManagement}</span>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }
+
+      // Program Notes section (new format only)
+      let programNotesHTML = '';
+      if (caseData.programNotes) {
+        programNotesHTML = `
+          <div class="case-detail__section case-detail__section--notes">
+            <h3>Program Notes</h3>
+            <p class="program-note">${caseData.programNotes}</p>
+          </div>
+        `;
+      }
+
+      // Background section (new format only, appears below photos)
+      let backgroundHTML = '';
+      if (caseData.background) {
+        backgroundHTML = `
+          <div class="case-detail__background">
+            <h3>Background & Summary</h3>
+            <div class="background-text">${caseData.background.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>
+          </div>
+        `;
+      }
+
       body.innerHTML = `
         <div class="case-detail">
           <div class="case-detail__images">
@@ -182,35 +385,22 @@ Each entry reflects an individual training context and highlights broader patter
               <img src="${caseData.beforeImage}" alt="Before">
               <img src="${caseData.afterImage}" alt="After">
             </div>
+            ${backgroundHTML}
           </div>
           <div class="case-detail__content">
             <h2 class="case-detail__id">${caseData.id}</h2>
             <div class="case-detail__metadata">
-              <div class="metadata-item">
-                <span class="metadata-label">Duration</span>
-                <span class="metadata-value">${caseData.duration} weeks</span>
-              </div>
-              <div class="metadata-item">
-                <span class="metadata-label">System Focus</span>
-                <span class="metadata-value">${caseData.focus.replace('-', ' ')}</span>
-              </div>
-              <div class="metadata-item">
-                <span class="metadata-label">Age Range</span>
-                <span class="metadata-value">${caseData.ageRange}</span>
-              </div>
+              ${metadataHTML}
             </div>
-            <div class="case-detail__section">
-              <h3>Constraints</h3>
-              <ul>
-                ${caseData.constraints.map(c => `<li>${c}</li>`).join('')}
-              </ul>
-            </div>
-            <div class="case-detail__section">
-              <h3>Observed Changes</h3>
-              <ul>
-                ${caseData.changes.map(c => `<li>${c}</li>`).join('')}
-              </ul>
-            </div>
+            ${caseData.tags && caseData.tags.length > 0 ? `
+              <div class="case-detail__tags">
+                ${caseData.tags.map(tag => `<span class="case-tag" data-tag="${tag}">${tag}</span>`).join('')}
+              </div>
+            ` : ''}
+            ${contextHTML}
+            ${outcomesHTML}
+            ${performanceHTML}
+            ${programNotesHTML}
             <div class="case-detail__report-link">
               <a href="case-report.html?case=${caseData.slug}" class="case-report-btn">
                 View Full Report →
@@ -225,6 +415,15 @@ Each entry reflects an individual training context and highlights broader patter
 
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
+      
+      // Add click handlers for tags
+      document.querySelectorAll('.case-tag').forEach(tagEl => {
+        tagEl.addEventListener('click', (e) => {
+          const tag = e.target.dataset.tag;
+          closeModal();
+          filterByTag(tag);
+        });
+      });
     }
 
     // Close modal
@@ -232,6 +431,40 @@ Each entry reflects an individual training context and highlights broader patter
       const modal = document.getElementById('caseModal');
       modal.classList.remove('active');
       document.body.style.overflow = '';
+    }
+
+    // Filter by tag (called from tag click in modal)
+    function filterByTag(tag) {
+      if (!activeFilters.searchTags.includes(tag)) {
+        activeFilters.searchTags.push(tag);
+        updateTagSearchUI();
+        renderCases();
+      }
+    }
+
+    // Update tag search UI
+    function updateTagSearchUI() {
+      const tagSearchContainer = document.getElementById('activeTagsContainer');
+      if (activeFilters.searchTags.length === 0) {
+        tagSearchContainer.innerHTML = '<span class="no-tags-message">Click tags in case modals to filter</span>';
+      } else {
+        tagSearchContainer.innerHTML = activeFilters.searchTags.map(tag => `
+          <span class="active-tag">
+            ${tag}
+            <button class="remove-tag-btn" data-tag="${tag}">×</button>
+          </span>
+        `).join('');
+        
+        // Add remove handlers
+        document.querySelectorAll('.remove-tag-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const tag = e.target.dataset.tag;
+            activeFilters.searchTags = activeFilters.searchTags.filter(t => t !== tag);
+            updateTagSearchUI();
+            renderCases();
+          });
+        });
+      }
     }
 
     // Filter handlers
@@ -272,6 +505,7 @@ Each entry reflects an individual training context and highlights broader patter
 
     // Initial render
     renderCases();
+    updateTagSearchUI();
   </script>
 
 </body>

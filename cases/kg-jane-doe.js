@@ -13,20 +13,46 @@ export default {
   // ===== Modal-Level Summary Fields =====
   metadata: {
     durationWeeks: 12,
-    systemFocus: "strength", // strength | consistency | hybrid | cycle-aware
-    ageRange: "25-29"
+    systemFocus: "strength",
+    ageRange: "25-29",
+    trainingFrequency: "3-4x/week",
+    programPhase: "build"
   },
   
-  constraints: [
-    "Inconsistent schedule due to shift work",
-    "Limited equipment (home gym only)",
-    "Previous injury considerations"
-  ],
+  // Context & Constraints (analytical format)
+  contextConstraints: {
+    trainingAvailability: "variable (shift work)",
+    equipmentAccess: "home gym only",
+    recoveryCapacity: "managed via autoregulation",
+    phaseConsiderations: "previous injury accommodations"
+  },
   
-  observedChanges: [
-    "Increased lower body strength (measured via bodyweight movements)",
-    "Improved movement efficiency in hip hinge patterns",
-    "Established consistent 3-4x/week training frequency"
+  // Key Outcomes (structured, measurable)
+  outcomes: {
+    strength: "increased lower body strength via bodyweight progressions",
+    technique: "improved hip hinge mechanics",
+    adherence: "established 3-4x/week consistency",
+    bodyComposition: "maintained composition during strength phase"
+  },
+  
+  // Performance & Adaptation (optional)
+  performance: {
+    strengthTrend: "↑",
+    volumeTolerance: "maintained despite schedule variability",
+    recoveryMarkers: "improved sleep consistency",
+    fatigueManagement: "effective"
+  },
+  
+  // Program Notes
+  programNotes: "Modified scheduling approach for shift work compatibility. Progressive loading well-tolerated.",
+  
+  // Tags (for filtering and search)
+  tags: [
+    "Beginner",
+    "Strength",
+    "Home Gym",
+    "Schedule Flexibility",
+    "Injury Accommodation"
   ],
   
   images: {
