@@ -12,17 +12,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <!-- ========== Header / Navigation ========== -->
   <header class="header">
     <nav class="nav container">
-      <a href="../index.html" class="nav__link">Home</a>
-      <a href="../work.html" class="nav__link">Work</a>
-      <a href="../outcomes.html" class="nav__link nav__link--active">Outcomes</a>
-      <a href="../about.html" class="nav__link">About</a>
+      <a href="index.html" class="nav__link">Home</a>
+      <a href="work.html" class="nav__link">Work</a>
+      <a href="outcomes.html" class="nav__link nav__link--active">Outcomes</a>
+      <a href="about.html" class="nav__link">About</a>
     </nav>
   </header>
 
@@ -32,48 +32,19 @@
 
       <!-- Back Navigation -->
       <nav class="case-back-nav">
-        <a href="../outcomes.html" class="case-back-link">← Back to Archive</a>
+        <a href="outcomes.html" class="case-back-link">← Back to Archive</a>
       </nav>
 
       <!-- Case Header -->
       <header class="case-report-header">
-        <h1 class="case-report-title" id="caseTitle">Case Report</h1>
-        <p class="case-report-subtitle" id="caseSubtitle">
-          Full report forthcoming
-        </p>
+        <h1 class="case-report-title" id="caseTitle">Loading...</h1>
+        <p class="case-report-subtitle" id="caseSubtitle"></p>
       </header>
 
-      <!-- Placeholder Content -->
-      <section class="case-report-placeholder">
-        <p>
-          Detailed case report with full performance analytics, body composition data, 
-          and training progression visualizations will be published here.
-        </p>
-        <p>
-          This page is currently under development. The summary view is available in the 
-          <a href="../outcomes.html">case archive</a>.
-        </p>
-      </section>
-
-      <!-- Future sections will go here:
-      
-      <section class="case-report-hero">
-        // Large before/after images
-      </section>
-
-      <section class="case-report-metadata">
-        // Key stats grid
-      </section>
-
-      <section class="case-report-performance">
-        // Charts and visualizations
-      </section>
-
-      <section class="case-report-details">
-        // Detailed breakdowns
-      </section>
-
-      -->
+      <!-- Content Container -->
+      <div id="reportContent" class="report-content">
+        <!-- Dynamic content loads here -->
+      </div>
 
     </div>
   </main>
@@ -88,29 +59,265 @@
 
   <!-- ========== Dynamic Content Loader ========== -->
   <script type="module">
-    // Extract case slug from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const caseSlug = urlParams.get('case');
+    import { ImageCarousel } from './js/carousel.js';
+    
+    // Wrap in async function to use await
+    (async function() {
+      // Extract case slug from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const caseSlug = urlParams.get('case');
 
-    if (caseSlug) {
+      console.log('Case slug from URL:', caseSlug);
+
+      if (!caseSlug) {
+        document.getElementById('caseTitle').textContent = 'No Case Specified';
+        document.getElementById('caseSubtitle').textContent = 'Please select a case from the outcomes archive.';
+        return;
+      }
+
       // Load case data dynamically
-      import(`../cases/case-loader.js`).then(module => {
+      try {
+        const module = await import(`./cases/case-loader.js`);
         const caseData = module.getCaseBySlug(caseSlug);
         
-        if (caseData) {
-          // Update page title
-          document.getElementById('caseTitle').textContent = `Case Report: ${caseData.id}`;
-          document.getElementById('caseSubtitle').textContent = 
-            `${caseData.metadata.durationWeeks} weeks • ${caseData.metadata.systemFocus} • Age ${caseData.metadata.ageRange}`;
-          document.title = `Case Report: ${caseData.id} — Kayleigh Gomez`;
-        } else {
+        console.log('Loaded case data:', caseData);
+        
+        if (!caseData) {
           document.getElementById('caseTitle').textContent = 'Case Not Found';
           document.getElementById('caseSubtitle').textContent = 'This case does not exist or has been removed.';
+          return;
         }
-      }).catch(err => {
-        console.error('Failed to load case data:', err);
-      });
+
+        // Update page header
+        document.getElementById('caseTitle').textContent = caseData.id;
+      document.getElementById('caseSubtitle').textContent = 
+        `${caseData.metadata.durationWeeks} weeks • ${caseData.metadata.systemFocus.charAt(0).toUpperCase() + caseData.metadata.systemFocus.slice(1)} Focus • Age ${caseData.metadata.ageRange}`;
+      document.title = `Case Report: ${caseData.id} — Kayleigh Gomez`;
+
+      const report = caseData.fullReport;
+      if (!report) {
+        document.getElementById('reportContent').innerHTML = '<p class="report-placeholder">Full report data not available for this case.</p>';
+        return;
+      }
+
+        // Build the full report HTML
+        document.getElementById('reportContent').innerHTML = `
+          <!-- Photo Carousel Section -->
+          <section class="report-section report-carousel-section">
+            <div class="report-carousel-container" id="reportCarousel"></div>
+          </section>
+
+          <!-- Overview Grid -->
+          <section class="report-section">
+            <h2 class="report-section-title">Overview</h2>
+            <div class="report-stats-grid">
+              <div class="stat-card">
+                <div class="stat-label">Duration</div>
+                <div class="stat-value">${caseData.metadata.durationWeeks} weeks</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Training Frequency</div>
+                <div class="stat-value">${caseData.metadata.trainingFrequency}</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Adherence Rate</div>
+                <div class="stat-value">${report.adherence.adherenceRate_pct}%</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Sessions Completed</div>
+                <div class="stat-value">${report.adherence.sessionsCompleted}/${report.adherence.sessionsCompleted + report.adherence.sessionsMissed}</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Body Composition -->
+          <section class="report-section">
+            <h2 class="report-section-title">Body Composition</h2>
+            <div class="report-comparison-grid">
+              <div class="comparison-card">
+                <div class="comparison-label">Baseline</div>
+                <div class="comparison-stats">
+                  <div class="comparison-stat">
+                    <span class="comparison-stat-label">Weight</span>
+                    <span class="comparison-stat-value">${report.bodyComposition.baseline.weight_kg} kg</span>
+                  </div>
+                  <div class="comparison-stat">
+                    <span class="comparison-stat-label">Body Fat</span>
+                    <span class="comparison-stat-value">${report.bodyComposition.baseline.bodyFat_pct}%</span>
+                  </div>
+                  <div class="comparison-stat">
+                    <span class="comparison-stat-label">Lean Mass</span>
+                    <span class="comparison-stat-value">${report.bodyComposition.baseline.leanMass_kg} kg</span>
+                  </div>
+                </div>
+              </div>
+              <div class="comparison-card">
+                <div class="comparison-label">Endpoint</div>
+                <div class="comparison-stats">
+                  <div class="comparison-stat">
+                    <span class="comparison-stat-label">Weight</span>
+                    <span class="comparison-stat-value">${report.bodyComposition.endpoint.weight_kg} kg</span>
+                    <span class="comparison-delta positive">+${(report.bodyComposition.endpoint.weight_kg - report.bodyComposition.baseline.weight_kg).toFixed(1)} kg</span>
+                  </div>
+                  <div class="comparison-stat">
+                    <span class="comparison-stat-label">Body Fat</span>
+                    <span class="comparison-stat-value">${report.bodyComposition.endpoint.bodyFat_pct}%</span>
+                    <span class="comparison-delta neutral">${(report.bodyComposition.endpoint.bodyFat_pct - report.bodyComposition.baseline.bodyFat_pct).toFixed(1)}%</span>
+                  </div>
+                  <div class="comparison-stat">
+                    <span class="comparison-stat-label">Lean Mass</span>
+                    <span class="comparison-stat-value">${report.bodyComposition.endpoint.leanMass_kg} kg</span>
+                    <span class="comparison-delta positive">+${(report.bodyComposition.endpoint.leanMass_kg - report.bodyComposition.baseline.leanMass_kg).toFixed(1)} kg</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="report-notes">${report.bodyComposition.changeNotes}</p>
+          </section>
+
+          <!-- Performance & Strength -->
+          <section class="report-section">
+            <h2 class="report-section-title">Performance Metrics</h2>
+            <div class="report-performance-grid">
+              ${report.performance.keyLifts.map(lift => `
+                <div class="performance-card">
+                  <div class="performance-exercise">${lift.exercise}</div>
+                  <div class="performance-data">
+                    <div class="performance-row">
+                      <span class="performance-label">Baseline</span>
+                      <span class="performance-value">${lift.baseline_kg ? lift.baseline_kg + ' kg' : lift.baseline_reps + ' reps'}</span>
+                    </div>
+                    <div class="performance-row">
+                      <span class="performance-label">Endpoint</span>
+                      <span class="performance-value">${lift.endpoint_kg ? lift.endpoint_kg + ' kg' : lift.endpoint_reps + ' reps'}</span>
+                    </div>
+                    <div class="performance-improvement">
+                      <span class="improvement-badge">+${lift.improvement_pct}%</span>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <p class="report-notes">${report.performance.strengthProgressionNotes}</p>
+          </section>
+
+          <!-- Program Design -->
+          <section class="report-section">
+            <h2 class="report-section-title">Program Design</h2>
+            <div class="report-detail-grid">
+              <div class="detail-card">
+                <div class="detail-label">Structure</div>
+                <div class="detail-value">${report.programDesign.structure}</div>
+              </div>
+              <div class="detail-card">
+                <div class="detail-label">Progression Strategy</div>
+                <div class="detail-value">${report.programDesign.progressionStrategy}</div>
+              </div>
+              <div class="detail-card">
+                <div class="detail-label">Adaptations</div>
+                <div class="detail-value">${report.programDesign.adaptations}</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Anthropometrics & Biomechanics -->
+          <section class="report-section">
+            <h2 class="report-section-title">Anthropometrics & Movement Quality</h2>
+            <div class="report-detail-grid">
+              <div class="detail-card">
+                <div class="detail-label">Height</div>
+                <div class="detail-value">${report.anthropometrics.height_cm} cm</div>
+              </div>
+              <div class="detail-card">
+                <div class="detail-label">Body Type</div>
+                <div class="detail-value">${report.anthropometrics.bodyType}</div>
+              </div>
+              <div class="detail-card">
+                <div class="detail-label">Movement Quality</div>
+                <div class="detail-value">${report.biomechanics.movementQuality}</div>
+              </div>
+              <div class="detail-card">
+                <div class="detail-label">Injury Risk Assessment</div>
+                <div class="detail-value">${report.biomechanics.injuryRisk}</div>
+              </div>
+            </div>
+            <p class="report-notes">${report.anthropometrics.deltas.notes}</p>
+          </section>
+
+          <!-- Recovery & Vitals -->
+          <section class="report-section">
+            <h2 class="report-section-title">Recovery & Vitals</h2>
+            <div class="report-stats-grid">
+              <div class="stat-card">
+                <div class="stat-label">Resting Heart Rate (Baseline)</div>
+                <div class="stat-value">${report.vitals.rhr_baseline} bpm</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Resting Heart Rate (Endpoint)</div>
+                <div class="stat-value">${report.vitals.rhr_endpoint} bpm</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Sleep Quality</div>
+                <div class="stat-value">${report.vitals.sleepQuality}</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Training Age</div>
+                <div class="stat-value">${report.identity.trainingAge}</div>
+              </div>
+            </div>
+            <p class="report-notes">${report.vitals.recoveryNotes}</p>
+          </section>
+
+          <!-- Outcomes Summary -->
+          <section class="report-section">
+            <h2 class="report-section-title">Outcome Summary</h2>
+            <div class="report-outcomes">
+              <div class="outcomes-group">
+                <h3 class="outcomes-group-title">Primary Outcomes</h3>
+                <ul class="outcomes-list">
+                  ${report.outcomeSummary.primaryOutcomes.map(outcome => `<li>${outcome}</li>`).join('')}
+                </ul>
+              </div>
+              <div class="outcomes-group">
+                <h3 class="outcomes-group-title">Secondary Outcomes</h3>
+                <ul class="outcomes-list">
+                  ${report.outcomeSummary.secondaryOutcomes.map(outcome => `<li>${outcome}</li>`).join('')}
+                </ul>
+              </div>
+              <div class="outcomes-context">
+                <h3 class="outcomes-group-title">Context & Limitations</h3>
+                <p>${report.outcomeSummary.limitationsAndContext}</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Background Context -->
+          <section class="report-section">
+            <h2 class="report-section-title">Client Background</h2>
+            <div class="report-background">
+              ${caseData.background.split('\n\n').map(para => `<p>${para}</p>`).join('')}
+            </div>
+          </section>
+        `;
+
+      // Initialize carousel with photos
+      const carouselContainer = document.getElementById('reportCarousel');
+      if (carouselContainer && caseData.photos) {
+        new ImageCarousel(carouselContainer, caseData.photos, {
+          showLabels: false,
+          showArrows: true,
+          showDots: true,
+          autoHide: true,
+          aspectRatio: '4/5'
+        });
+      }
+      
+    } catch (err) {
+      console.error('Failed to load case data:', err);
+      document.getElementById('caseTitle').textContent = 'Error Loading Case';
+      document.getElementById('caseSubtitle').textContent = 'Please try again or return to the archive.';
     }
+    })(); // Immediately invoke the async function
   </script>
 
 </body>

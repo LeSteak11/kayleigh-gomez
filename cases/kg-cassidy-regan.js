@@ -60,6 +60,19 @@ export default {
     "Athletic Build"
   ],
   
+  // Photos for carousel - just upload as 1.jpg, 2.jpg, 3.jpg, etc.
+  photos: [
+    { src: "./client-pics/kg-cassidy-regan/1.jpg", alt: "Client progress photo", label: "" },
+    { src: "./client-pics/kg-cassidy-regan/2.jpg", alt: "Client progress photo", label: "" },
+    { src: "./client-pics/kg-cassidy-regan/3.jpg", alt: "Client progress photo", label: "" },
+    { src: "./client-pics/kg-cassidy-regan/4.jpg", alt: "Client progress photo", label: "" },
+    { src: "./client-pics/kg-cassidy-regan/5.jpg", alt: "Client progress photo", label: "" },
+    { src: "./client-pics/kg-cassidy-regan/6.jpg", alt: "Client progress photo", label: "" },
+    { src: "./client-pics/kg-cassidy-regan/7.jpg", alt: "Client progress photo", label: "" },
+    { src: "./client-pics/kg-cassidy-regan/8.jpg", alt: "Client progress photo", label: "" }
+  ],
+  
+  // Deprecated: keeping for backward compatibility
   images: {
     before: "https://images.unsplash.com/photo-1550345332-09e3ac987658?w=400&h=600&fit=crop",
     after: "https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&h=600&fit=crop",

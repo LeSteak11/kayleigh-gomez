@@ -112,8 +112,9 @@ Each entry reflects an individual training context and highlights broader patter
 
   <!-- ========== Case Data & Scripts ========== -->
   <script type="module">
-    // Import case data from case-loader
+    // Import case data from case-loader and carousel component
     import { getAllCases } from './cases/case-loader.js';
+    import { ImageCarousel } from './js/carousel.js';
     
     // Get all consented cases and transform to display format
     const allCasesData = getAllCases();
@@ -134,8 +135,14 @@ Each entry reflects an individual training context and highlights broader patter
       programNotes: c.programNotes,
       background: c.background,
       tags: c.tags || [],
-      beforeImage: c.images.before,
-      afterImage: c.images.after
+      // New photos array for carousel (fallback to old format if not present)
+      photos: c.photos || [
+        { src: c.images.before, alt: "Before", label: "Before" },
+        { src: c.images.after, alt: "After", label: "After" }
+      ],
+      // Thumbnail images: use first 2 photos from array (or fallback to old images)
+      beforeImage: c.photos && c.photos[0] ? c.photos[0].src : c.images.before,
+      afterImage: c.photos && c.photos[1] ? c.photos[1].src : c.images.after
     }));
 
     // Extract all unique tags for filtering
@@ -381,10 +388,7 @@ Each entry reflects an individual training context and highlights broader patter
       body.innerHTML = `
         <div class="case-detail">
           <div class="case-detail__images">
-            <div class="case-detail__image-pair">
-              <img src="${caseData.beforeImage}" alt="Before">
-              <img src="${caseData.afterImage}" alt="After">
-            </div>
+            <div class="case-detail__carousel" id="modalCarousel"></div>
             ${backgroundHTML}
           </div>
           <div class="case-detail__content">
@@ -415,6 +419,18 @@ Each entry reflects an individual training context and highlights broader patter
 
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
+      
+      // Initialize carousel
+      const carouselContainer = document.getElementById('modalCarousel');
+      if (carouselContainer && caseData.photos) {
+        new ImageCarousel(carouselContainer, caseData.photos, {
+          showLabels: true,
+          showArrows: true,
+          showDots: true,
+          autoHide: true,
+          aspectRatio: '4/5'
+        });
+      }
       
       // Add click handlers for tags
       document.querySelectorAll('.case-tag').forEach(tagEl => {
