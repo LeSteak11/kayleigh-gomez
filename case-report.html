@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case Report: [CASE-ID] — Detailed training outcome data and analysis.">
+  <title>Case Report: [CASE-ID] — Kayleigh Gomez</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <!-- ========== Header / Navigation ========== -->
+  <header class="header">
+    <nav class="nav container">
+      <a href="../index.html" class="nav__link">Home</a>
+      <a href="../work.html" class="nav__link">Work</a>
+      <a href="../outcomes.html" class="nav__link nav__link--active">Outcomes</a>
+      <a href="../about.html" class="nav__link">About</a>
+    </nav>
+  </header>
+
+  <!-- ========== Main Content ========== -->
+  <main class="main">
+    <div class="case-report-page">
+
+      <!-- Back Navigation -->
+      <nav class="case-back-nav">
+        <a href="../outcomes.html" class="case-back-link">← Back to Archive</a>
+      </nav>
+
+      <!-- Case Header -->
+      <header class="case-report-header">
+        <h1 class="case-report-title" id="caseTitle">Case Report</h1>
+        <p class="case-report-subtitle" id="caseSubtitle">
+          Full report forthcoming
+        </p>
+      </header>
+
+      <!-- Placeholder Content -->
+      <section class="case-report-placeholder">
+        <p>
+          Detailed case report with full performance analytics, body composition data, 
+          and training progression visualizations will be published here.
+        </p>
+        <p>
+          This page is currently under development. The summary view is available in the 
+          <a href="../outcomes.html">case archive</a>.
+        </p>
+      </section>
+
+      <!-- Future sections will go here:
+      
+      <section class="case-report-hero">
+        // Large before/after images
+      </section>
+
+      <section class="case-report-metadata">
+        // Key stats grid
+      </section>
+
+      <section class="case-report-performance">
+        // Charts and visualizations
+      </section>
+
+      <section class="case-report-details">
+        // Detailed breakdowns
+      </section>
+
+      -->
+
+    </div>
+  </main>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__copyright">&copy; 2025 Kayleigh Gomez</p>
+      <p class="footer__disclaimer">Educational content only. This is not medical advice.</p>
+    </div>
+  </footer>
+
+  <!-- ========== Dynamic Content Loader ========== -->
+  <script type="module">
+    // Extract case slug from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const caseSlug = urlParams.get('case');
+
+    if (caseSlug) {
+      // Load case data dynamically
+      import(`../cases/case-loader.js`).then(module => {
+        const caseData = module.getCaseBySlug(caseSlug);
+        
+        if (caseData) {
+          // Update page title
+          document.getElementById('caseTitle').textContent = `Case Report: ${caseData.id}`;
+          document.getElementById('caseSubtitle').textContent = 
+            `${caseData.metadata.durationWeeks} weeks • ${caseData.metadata.systemFocus} • Age ${caseData.metadata.ageRange}`;
+          document.title = `Case Report: ${caseData.id} — Kayleigh Gomez`;
+        } else {
+          document.getElementById('caseTitle').textContent = 'Case Not Found';
+          document.getElementById('caseSubtitle').textContent = 'This case does not exist or has been removed.';
+        }
+      }).catch(err => {
+        console.error('Failed to load case data:', err);
+      });
+    }
+  </script>
+
+</body>
+</html>

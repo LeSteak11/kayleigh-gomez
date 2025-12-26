@@ -1725,6 +1725,30 @@ a:hover {
   color: var(--color-text-muted);
 }
 
+.case-detail__report-link {
+  margin-top: var(--space-xl);
+  text-align: center;
+}
+
+.case-report-btn {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-lg);
+  background: rgba(107, 154, 154, 0.1);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.case-report-btn:hover {
+  background: rgba(107, 154, 154, 0.15);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
 .case-detail__disclaimer {
   margin-top: var(--space-xl);
   padding: var(--space-md);
