@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Observed training outcomes archive — Documented cases from applied fitness systems work.">
+  <title>Observed Outcomes — Kayleigh Gomez</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========== Header / Navigation ========== -->
+  <header class="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav__link">Home</a>
+      <a href="work.html" class="nav__link">Work</a>
+      <!-- <a href="shop.html" class="nav__link">Shop</a> -->
+      <a href="about.html" class="nav__link">About</a>
+      <a href="outcomes.html" class="nav__link nav__link--active">Outcomes</a>
+    </nav>
+  </header>
+
+  <!-- ========== Main Content ========== -->
+  <main class="main">
+    <div class="outcomes-page">
+
+      <!-- Page Header -->
+      <header class="outcomes-header">
+        <h1 class="outcomes-header__title">Observed Training Outcomes</h1>
+        <p class="outcomes-header__subtitle">
+          Archive view — Anonymized cases — 2022–2025
+        </p>
+      </header>
+
+      <!-- Framing Block -->
+      <section class="outcomes-framing">
+        <p>
+          This archive presents selected examples from women who have participated in structured online training programs I’ve designed and coached.
+
+          Each case reflects real-world training over time and is shared to illustrate patterns in consistency, adaptation, and response across different systems.
+
+          All clients shown have provided permission for their images and general program details to be shared in this format. Identifying information has been removed.
+        </p>
+      </section>
+
+      <!-- Filters -->
+      <div class="outcomes-filters">
+        <div class="filter-group">
+          <label class="filter-label">System Focus</label>
+          <div class="filter-options">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="strength">Strength</button>
+            <button class="filter-btn" data-filter="consistency">Consistency</button>
+            <button class="filter-btn" data-filter="cycle-aware">Cycle-Aware</button>
+            <button class="filter-btn" data-filter="hybrid">Hybrid</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Duration</label>
+          <div class="filter-options">
+            <button class="filter-btn active" data-filter-duration="all">All</button>
+            <button class="filter-btn" data-filter-duration="8-12">8-12 weeks</button>
+            <button class="filter-btn" data-filter-duration="12-16">12-16 weeks</button>
+            <button class="filter-btn" data-filter-duration="16+">16+ weeks</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case Grid -->
+      <div class="outcomes-grid" id="casesGrid">
+        <!-- Cases will be populated by JavaScript -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Case Detail Modal -->
+  <div class="case-modal" id="caseModal">
+    <div class="case-modal__overlay"></div>
+    <div class="case-modal__content">
+      <button class="case-modal__close" aria-label="Close">&times;</button>
+      <div class="case-modal__body" id="modalBody">
+        <!-- Content populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__copyright">&copy; 2025 Kayleigh Gomez</p>
+      <p class="footer__disclaimer">Educational content only. This is not medical advice.</p>
+    </div>
+  </footer>
+
+  <!-- ========== Case Data & Scripts ========== -->
+  <script>
+    // Case data structure
+    const cases = [
+      {
+        id: "KG-2024-037",
+        focus: "strength",
+        duration: 12,
+        ageRange: "25-29",
+        constraints: ["Inconsistent schedule", "Limited equipment"],
+        changes: [
+          "Increased lower body strength (measured via bodyweight movements)",
+          "Improved movement efficiency in hip hinge patterns",
+          "Established 3-4x/week training frequency"
+        ],
+        beforeImage: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=600&fit=crop",
+        afterImage: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=600&fit=crop"
+      },
+      {
+        id: "KG-2023-142",
+        focus: "consistency",
+        duration: 16,
+        ageRange: "30-34",
+        constraints: ["Shift work", "High stress environment"],
+        changes: [
+          "Maintained training frequency through 3 schedule disruptions",
+          "Reduced training friction via environment design",
+          "Observable muscle retention during weight loss phase"
+        ],
+        beforeImage: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=600&fit=crop",
+        afterImage: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=600&fit=crop"
+      },
+      {
+        id: "KG-2024-089",
+        focus: "cycle-aware",
+        duration: 20,
+        ageRange: "25-29",
+        constraints: ["Symptomatic luteal phase", "Variable energy availability"],
+        changes: [
+          "Improved adherence via phase-specific training adjustments",
+          "Increased training volume in follicular phase",
+          "Maintained consistency across full menstrual cycles"
+        ],
+        beforeImage: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=600&fit=crop",
+        afterImage: "https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&h=600&fit=crop"
+      },
+      {
+        id: "KG-2023-215",
+        focus: "hybrid",
+        duration: 14,
+        ageRange: "35-39",
+        constraints: ["Limited recovery capacity", "Home training only"],
+        changes: [
+          "Built upper body strength via progressive overload",
+          "Established sustainable training rhythm",
+          "Improved body composition via strength + nutrition structure"
+        ],
+        beforeImage: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=400&h=600&fit=crop",
+        afterImage: "https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=400&h=600&fit=crop"
+      },
+      {
+        id: "KG-2024-156",
+        focus: "strength",
+        duration: 10,
+        ageRange: "30-34",
+        constraints: ["Beginner to resistance training", "Time-constrained"],
+        changes: [
+          "Developed foundational movement patterns",
+          "Progressive load increases across major lifts",
+          "Increased lean mass via structured programming"
+        ],
+        beforeImage: "https://images.unsplash.com/photo-1549576490-b0b4831ef60a?w=400&h=600&fit=crop",
+        afterImage: "https://images.unsplash.com/photo-1550345332-09e3ac987658?w=400&h=600&fit=crop"
+      },
+      {
+        id: "KG-2023-278",
+        focus: "consistency",
+        duration: 18,
+        ageRange: "40-44",
+        constraints: ["Previous program-hopping history", "Motivation inconsistency"],
+        changes: [
+          "Maintained training for 18 consecutive weeks",
+          "Built habit infrastructure independent of motivation",
+          "Observable strength progression via tracked metrics"
+        ],
+        beforeImage: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=600&fit=crop",
+        afterImage: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=600&fit=crop"
+      }
+    ];
+
+    // Filter state
+    let activeFilters = {
+      focus: 'all',
+      duration: 'all'
+    };
+
+    // Render cases
+    function renderCases() {
+      const grid = document.getElementById('casesGrid');
+      const filtered = cases.filter(c => {
+        const focusMatch = activeFilters.focus === 'all' || c.focus === activeFilters.focus;
+        const durationMatch = activeFilters.duration === 'all' || 
+          (activeFilters.duration === '8-12' && c.duration >= 8 && c.duration <= 12) ||
+          (activeFilters.duration === '12-16' && c.duration > 12 && c.duration <= 16) ||
+          (activeFilters.duration === '16+' && c.duration > 16);
+        return focusMatch && durationMatch;
+      });
+
+      grid.innerHTML = filtered.map(c => `
+        <article class="case-card" data-case-id="${c.id}">
+          <div class="case-card__images">
+            <img src="${c.beforeImage}" alt="Before" loading="lazy">
+            <img src="${c.afterImage}" alt="After" loading="lazy">
+          </div>
+          <div class="case-card__meta">
+            <div class="case-card__id">${c.id}</div>
+            <div class="case-card__details">
+              <span>${c.duration} weeks</span>
+              <span>${c.focus.replace('-', ' ')}</span>
+              <span>Age ${c.ageRange}</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      // Add click handlers
+      document.querySelectorAll('.case-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const caseId = card.dataset.caseId;
+          openModal(caseId);
+        });
+      });
+    }
+
+    // Open modal
+    function openModal(caseId) {
+      const caseData = cases.find(c => c.id === caseId);
+      const modal = document.getElementById('caseModal');
+      const body = document.getElementById('modalBody');
+
+      body.innerHTML = `
+        <div class="case-detail">
+          <div class="case-detail__images">
+            <div class="case-detail__image-pair">
+              <img src="${caseData.beforeImage}" alt="Before">
+              <img src="${caseData.afterImage}" alt="After">
+            </div>
+          </div>
+          <div class="case-detail__content">
+            <h2 class="case-detail__id">${caseData.id}</h2>
+            <div class="case-detail__metadata">
+              <div class="metadata-item">
+                <span class="metadata-label">Duration</span>
+                <span class="metadata-value">${caseData.duration} weeks</span>
+              </div>
+              <div class="metadata-item">
+                <span class="metadata-label">System Focus</span>
+                <span class="metadata-value">${caseData.focus.replace('-', ' ')}</span>
+              </div>
+              <div class="metadata-item">
+                <span class="metadata-label">Age Range</span>
+                <span class="metadata-value">${caseData.ageRange}</span>
+              </div>
+            </div>
+            <div class="case-detail__section">
+              <h3>Constraints</h3>
+              <ul>
+                ${caseData.constraints.map(c => `<li>${c}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="case-detail__section">
+              <h3>Observed Changes</h3>
+              <ul>
+                ${caseData.changes.map(c => `<li>${c}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="case-detail__disclaimer">
+              <p>Individual case. Variables including adherence, baseline fitness, nutrition environment, and biological factors influence outcomes. Not a guarantee of results.</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal
+    function closeModal() {
+      const modal = document.getElementById('caseModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Filter handlers
+    document.querySelectorAll('[data-filter]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const filter = e.target.dataset.filter;
+        activeFilters.focus = filter;
+        
+        // Update active state
+        e.target.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        renderCases();
+      });
+    });
+
+    document.querySelectorAll('[data-filter-duration]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const filter = e.target.dataset.filterDuration;
+        activeFilters.duration = filter;
+        
+        // Update active state
+        e.target.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        renderCases();
+      });
+    });
+
+    // Modal close handlers
+    document.querySelector('.case-modal__close').addEventListener('click', closeModal);
+    document.querySelector('.case-modal__overlay').addEventListener('click', closeModal);
+
+    // Keyboard close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Initial render
+    renderCases();
+  </script>
+
+</body>
+</html>
