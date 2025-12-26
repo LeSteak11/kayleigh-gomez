@@ -175,31 +175,37 @@ a:hover {
 .hero__name {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
   letter-spacing: -0.03em;
 }
 
 .hero__subtitle {
   font-size: var(--font-size-lg);
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-md);
-  font-weight: var(--font-weight-normal);
+  margin-bottom: var(--space-xs);
+  font-weight: var(--font-weight-medium);
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: var(--space-xs);
+  display: inline-block;
 }
 
 .hero__credential {
-  font-size: var(--font-size-xs);
+  font-size: 0.65rem;
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  margin-bottom: var(--space-lg);
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-md);
+  opacity: 0.5;
 }
 
 .hero__summary {
   font-size: var(--font-size-base);
   color: var(--color-text-secondary);
-  max-width: 500px;
+  max-width: 460px;
   margin: 0 auto var(--space-xl);
   line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-medium);
 }
 
 .hero__actions {
@@ -221,7 +227,7 @@ a:hover {
   letter-spacing: 0.1em;
   border: 1px solid var(--color-border);
   background: transparent;
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -235,6 +241,7 @@ a:hover {
   background: var(--color-text-primary);
   color: var(--color-bg);
   border-color: var(--color-text-primary);
+  font-weight: var(--font-weight-bold);
 }
 
 .btn--primary:hover {
