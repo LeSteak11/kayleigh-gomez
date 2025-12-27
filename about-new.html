@@ -195,8 +195,27 @@
       const prevButton = document.querySelector(".carousel-btn--prev");
       const nextButton = document.querySelector(".carousel-btn--next");
       const slides = document.querySelectorAll(".carousel-slide");
+      const fallback = document.querySelector(".carousel-fallback");
 
       if (!slides.length) return;
+
+      // Check if any images loaded successfully
+      let hasValidImage = false;
+      slides.forEach((slide) => {
+        const img = slide.querySelector("img");
+        if (img && img.complete && img.naturalHeight !== 0) {
+          hasValidImage = true;
+        }
+      });
+
+      // If no valid images, show fallback
+      if (!hasValidImage && fallback) {
+        setTimeout(() => {
+          if (!hasValidImage) {
+            fallback.style.display = 'flex';
+          }
+        }, 1000);
+      }
 
       function showSlide(index) {
         if (isTransitioning) return;
