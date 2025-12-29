@@ -21,6 +21,7 @@
     <nav class="nav container">
       <a href="index.html" class="nav__link">Home</a>
       <a href="work.html" class="nav__link">Work</a>
+      <a href="training.html" class="nav__link nav__link--active">Training</a>
       <a href="shop.html" class="nav__link">Shop</a>
       <a href="about.html" class="nav__link">About</a>
     </nav>
@@ -45,70 +46,21 @@
         </p>
       </section>
 
-      <!-- Who It's For Section -->
-      <section class="waitlist-section">
-        <h2 class="waitlist-section__title">Who this is for</h2>
-        
-        <div class="waitlist-columns">
-          <div class="waitlist-column">
-            <h3 class="waitlist-column__heading">This may be for you if:</h3>
-            <ul class="waitlist-list">
-              <li class="waitlist-list__item">You struggle to stay consistent long term</li>
-              <li class="waitlist-list__item">Traditional programs feel rigid or exhausting</li>
-              <li class="waitlist-list__item">You want structure without pressure</li>
-            </ul>
-          </div>
-
-          <div class="waitlist-column">
-            <h3 class="waitlist-column__heading">This is not for you if:</h3>
-            <ul class="waitlist-list">
-              <li class="waitlist-list__item">You want rapid transformations</li>
-              <li class="waitlist-list__item">You prefer extreme intensity or challenge-style programs</li>
-              <li class="waitlist-list__item">You're looking for 1:1 coaching</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- What Joining Means Section -->
-      <section class="waitlist-section">
-        <h2 class="waitlist-section__title">What joining the waitlist means</h2>
-        <ul class="waitlist-list waitlist-list--inline">
-          <li class="waitlist-list__item">Early access when enrollment opens</li>
-          <li class="waitlist-list__item">Program details before public release</li>
-          <li class="waitlist-list__item">No obligation to join</li>
-        </ul>
-      </section>
-
       <!-- Email Capture Form -->
       <section class="waitlist-form-section">
-        <form class="waitlist-form" action="https://app.convertkit.com/forms/YOUR_FORM_ID/subscriptions" method="post">
-          <div class="waitlist-form__fields">
-            <div class="waitlist-form__field">
-              <label for="first_name" class="waitlist-form__label">First Name</label>
-              <input 
-                type="text" 
-                id="first_name" 
-                name="fields[first_name]" 
-                class="waitlist-form__input" 
-                required
-              >
-            </div>
-
-            <div class="waitlist-form__field">
-              <label for="email_address" class="waitlist-form__label">Email</label>
-              <input 
-                type="email" 
-                id="email_address" 
-                name="email_address" 
-                class="waitlist-form__input" 
-                required
-              >
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn--primary waitlist-form__submit">Join the Waitlist</button>
-        </form>
+        <iframe 
+          data-tally-src="https://tally.so/embed/A7KZ2N?alignLeft=1&hideTitle=0&transparentBackground=1&dynamicHeight=1" 
+          loading="lazy" 
+          width="100%" 
+          height="253" 
+          frameborder="0" 
+          marginheight="0" 
+          marginwidth="0" 
+          title="Built for Consistency Waitlist">
+        </iframe>
+        <script>
+          var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
+        </script>
       </section>
 
     </div>
