@@ -70,7 +70,8 @@ body {
   line-height: var(--line-height-normal);
   color: var(--color-text-primary);
   background-color: var(--color-bg);
-  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 /* --------------------------------------------------------------------------
@@ -129,8 +130,13 @@ a:hover {
    Header & Navigation
    -------------------------------------------------------------------------- */
 .header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid rgba(51, 51, 51, 0.5);
+  z-index: 100;
 }
 
 .nav {
@@ -161,7 +167,8 @@ a:hover {
    Main Content
    -------------------------------------------------------------------------- */
 .main {
-  padding: var(--space-2xl) 0;
+  padding: 0;
+  margin: 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -177,9 +184,10 @@ a:hover {
   padding: 0;
   overflow: hidden;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100vh;
+  margin-top: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 }
 
@@ -214,11 +222,87 @@ a:hover {
   pointer-events: auto;
 }
 
+/* --------------------------------------------------------------------------
+   Hero Image Framing & Object Position
+   Default: center right (protects subject positioning)
+   -------------------------------------------------------------------------- */
 .hero__bg-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center right;
+}
+
+/* Per-slide position modifiers */
+.hero-carousel-slide--center-top .hero__bg-image {
+  object-position: center top;
+}
+
+.hero-carousel-slide--center-center .hero__bg-image {
+  object-position: center center;
+}
+
+.hero-carousel-slide--center-right .hero__bg-image {
+  object-position: center right;
+}
+
+.hero-carousel-slide--center-left .hero__bg-image {
+  object-position: center left;
+}
+
+.hero-carousel-slide--left-center .hero__bg-image {
+  object-position: left center;
+}
+
+.hero-carousel-slide--right-center .hero__bg-image {
+  object-position: right center;
+}
+
+.hero-carousel-slide--left-top .hero__bg-image {
+  object-position: left top;
+}
+
+.hero-carousel-slide--right-top .hero__bg-image {
+  object-position: 70% 15%;
+}
+
+/* Tablet/medium screens - adjust positioning to prevent awkward cropping */
+@media (min-width: 768px) and (max-width: 1200px) {
+  .hero-carousel-slide--left-top .hero__bg-image {
+    object-position: 25% top;
+  }
+  
+  .hero-carousel-slide--right-top .hero__bg-image {
+    object-position: 65% 15%;
+  }
+}
+
+/* Mobile-specific framing (prioritize faces over bodies) */
+@media (max-width: 767px) {
+  .hero--with-bg {
+    height: min(75vh, 650px);
+  }
+  
+  .hero__bg-image {
+    object-position: center 30%;
+  }
+  
+  .hero-carousel-slide--center-top .hero__bg-image {
+    object-position: center 25%;
+  }
+  
+  .hero-carousel-slide--center-right .hero__bg-image,
+  .hero-carousel-slide--center-left .hero__bg-image {
+    object-position: center 30%;
+  }
+  
+  .hero-carousel-slide--left-center .hero__bg-image {
+    object-position: left 50%;
+  }
+  
+  .hero-carousel-slide--right-center .hero__bg-image {
+    object-position: right 30%;
+  }
 }
 
 .hero-carousel-navigation {
@@ -241,7 +325,8 @@ a:hover {
 .hero__content {
   position: relative;
   z-index: 2;
-  padding: var(--space-3xl) 0;
+  padding: 0 0 var(--space-3xl);
+  width: 100%;
 }
 
 .hero__name {
@@ -545,9 +630,15 @@ a:hover {
    Footer
    -------------------------------------------------------------------------- */
 .footer {
-  padding: var(--space-xl) 0;
-  border-top: 1px solid var(--color-border);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-lg) 0;
+  background: transparent;
+  border-top: none;
   text-align: center;
+  z-index: 101;
 }
 
 .footer__copyright {
