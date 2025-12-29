@@ -254,7 +254,7 @@ a:hover {
 
 .hero__subtitle {
   font-size: var(--font-size-lg);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   margin-bottom: var(--space-sm);
   font-weight: var(--font-weight-medium);
   border-bottom: 1px solid var(--color-accent);
@@ -265,7 +265,7 @@ a:hover {
 
 .hero__credential {
   font-size: 0.65rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin-top: 0;
@@ -275,7 +275,7 @@ a:hover {
 
 .hero__summary {
   font-size: var(--font-size-base);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   max-width: 460px;
   margin: 0 auto var(--space-xl);
   line-height: var(--line-height-normal);
@@ -311,7 +311,7 @@ a:hover {
   height: 48px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   transition: all 0.2s ease;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
